@@ -3677,12 +3677,8 @@ void SurfaceFlinger::onCompositionPresented(PhysicalDisplayId pacesetterId,
     mQtiSFExtnIntf->qtiUpdateSmomoState();
 // QTI_END: 2023-03-06: Display: SF: Squash commit of SF Extensions.
     if (hasPacesetterDisplay && !pacesetterDisplay->isPoweredOn()) {
-        getRenderEngine().cleanupPostRender();
         return;
     }
-
-    // Cleanup any outstanding resources due to rendering a prior frame.
-    getRenderEngine().cleanupPostRender();
 
     if (mNumTrustedPresentationListeners > 0) {
         // We avoid any reverse traversal upwards so this shouldn't be too expensive
