@@ -6727,6 +6727,11 @@ void SurfaceFlinger::setPowerModeInternal(const sp<DisplayDevice>& display, hal:
         /* QTI_BEGIN */
         if (!qtiIsDummyDisplay) {
             mQtiSFExtnIntf->qtiUpdateVsyncSource();
+            if (currentMode == hal::PowerMode::DOZE_SUSPEND && displayId == mActiveDisplayId) {
+                ALOGI("Force repainting for DOZE_SUSPEND -> DOZE or ON.");
+                mVisibleRegionsDirty = true;
+                scheduleRepaint();
+            }
         /* QTI_END */
         } else if (currentMode == hal::PowerMode::DOZE_SUSPEND &&
             (displayId == mActiveDisplayId || FlagManager::getInstance().multithreaded_present())) {
