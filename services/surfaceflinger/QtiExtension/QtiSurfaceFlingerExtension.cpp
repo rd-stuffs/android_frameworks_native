@@ -2297,7 +2297,7 @@ void QtiSurfaceFlingerExtension::qtiUpdateVsyncSource() NO_THREAD_SAFETY_ANALYSI
         mQtiFlinger->mScheduler->enableSyntheticVsync();
     } else if (mQtiNextVsyncSource && (mQtiActiveVsyncSource == NULL)) {
         const auto activeMode = mQtiNextVsyncSource->refreshRateSelector().getActiveMode().modePtr;
-        mQtiFlinger->mScheduler->enableSyntheticVsync();
+        mQtiFlinger->mScheduler->enableSyntheticVsync(false);
         mQtiFlinger->mScheduler->resyncToHardwareVsync(mQtiNextVsyncSource->getPhysicalId(), true,
                                                        activeMode.get());
     } else if ((mQtiNextVsyncSource != NULL) && (mQtiActiveVsyncSource != NULL)) {
