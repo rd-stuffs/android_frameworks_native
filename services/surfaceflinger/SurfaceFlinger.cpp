@@ -3062,10 +3062,6 @@ CompositeResultsPerDisplay SurfaceFlinger::composite(
             }
         }
 
-        /* QTI_BEGIN */
-        mQtiSFExtnIntf->qtiDumpDrawCycle(true);
-        /* QTI_END */
-
         mCompositionEngine->present(refreshArgs);
         moveSnapshotsFromCompositionArgs(refreshArgs, layers);
 
@@ -3487,7 +3483,6 @@ void SurfaceFlinger::onCompositionPresented(PhysicalDisplayId pacesetterId,
     }
 
     /* QTI_BEGIN */
-    mQtiSFExtnIntf->qtiDumpDrawCycle(false);
     mQtiSFExtnIntf->qtiUpdateSmomoState();
     /* QTI_END */
     if (hasPacesetterDisplay && !pacesetterDisplay->isPoweredOn()) {
@@ -6846,13 +6841,6 @@ void SurfaceFlinger::setPowerMode(const sp<IBinder>& displayToken, int mode) {
 }
 
 status_t SurfaceFlinger::doDump(int fd, const DumpArgs& args, bool asProto) {
-    /* QTI_BEGIN */
-    size_t numArgs = args.size();
-    if (numArgs && ((args[0] == String16("--file")) ||
-        (args[0] == String16("--allocated_buffers")))) {
-        return mQtiSFExtnIntf->qtiDoDumpContinuous(fd, args);
-    }
-    /* QTI_END */
     std::string result;
 
     IPCThreadState* ipc = IPCThreadState::self();
@@ -6916,16 +6904,7 @@ status_t SurfaceFlinger::doDump(int fd, const DumpArgs& args, bool asProto) {
                 dumpVisibleFrontEnd(compositionLayers);
             })
             .get();
-
-    /* QTI_BEGIN */
-    // selection of mini dumpsys (Format: adb shell dumpsys SurfaceFlinger --mini)
-    if (numArgs && ((args[0] == String16("--mini")))) {
-        mQtiSFExtnIntf->qtiDumpMini(result);
-    } else {
-        dumpAll(args, compositionLayers, result);
-    }
-    /* QTI_END */
-
+    dumpAll(args, compositionLayers, result);
     write(fd, result.c_str(), result.size());
     return NO_ERROR;
 }

@@ -1132,13 +1132,9 @@ std::vector<std::unique_ptr<LayerSnapshot>>& LayerSnapshotBuilder::getSnapshots(
 
 void LayerSnapshotBuilder::forEachVisibleSnapshot(const ConstVisitor& visitor) const {
     for (int i = 0; i < mNumInterestingSnapshots; i++) {
-        if (mSnapshots[(size_t)i] == nullptr) {
-          ALOGV("%s snapshot is null", __func__);
-        } else {
-            LayerSnapshot& snapshot = *mSnapshots[(size_t)i];
-            if (!snapshot.isVisible) continue;
-            visitor(snapshot);
-        }
+        LayerSnapshot& snapshot = *mSnapshots[(size_t)i];
+        if (!snapshot.isVisible) continue;
+        visitor(snapshot);
     }
 }
 

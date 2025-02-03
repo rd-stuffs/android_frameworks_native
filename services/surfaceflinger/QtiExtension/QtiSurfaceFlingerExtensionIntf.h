@@ -18,8 +18,6 @@ class DisplayExtnIntf;
 using android::scheduler::VsyncConfiguration;
 namespace android::surfaceflingerextension {
 
-using DumpArgs = Vector<String16>;
-
 class QtiHWComposerExtensionIntf;
 
 enum QtiFeature {
@@ -188,9 +186,6 @@ public:
                                              sp<DisplayDevice> display,
                                              const DisplayDeviceState& drawingState) = 0;
     virtual void qtiFbScalingOnPowerChange(sp<DisplayDevice> display) = 0;
-    virtual void qtiDumpMini(std::string& result) = 0;
-    virtual status_t qtiDoDumpContinuous(int fd, const DumpArgs& args) = 0;
-    virtual void qtiDumpDrawCycle(bool prePrepare) = 0;
 
     /*
      * Methods for multiple displays
